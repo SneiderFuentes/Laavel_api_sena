@@ -91,5 +91,17 @@ class ProductController extends Controller
 
         return response()->json(['message' => 'Producto eliminado exitosamente']);
     }
+    public function search(Request $request)
+    {
+        // Validar que el parámetro de búsqueda esté presente
+        $query = $request->input('query');
+        if (!$query) {
+            return response()->json(['error' => 'No search query provided'], 400);
+        }
+
+        // Realizar la búsqueda en la base de datos
+        $products = Product::where('name', 'LIKE', "%{$query}%")->get();
+        return response()->json($products);
+    }
 
 }
